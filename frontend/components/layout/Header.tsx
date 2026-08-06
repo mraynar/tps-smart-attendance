@@ -43,8 +43,10 @@ export default function Header() {
   return (
     <header style={{
       height: 72,
-      background: "#ffffff",
-      borderBottom: "1px solid #F3F4F6",
+      background: "rgba(255, 255, 255, 0.85)",
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
+      borderBottom: "1px solid rgba(229, 231, 235, 0.6)",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -52,16 +54,23 @@ export default function Header() {
       position: "sticky",
       top: 0,
       zIndex: 30,
-      boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+      boxShadow: "0 1px 3px rgba(0,0,0,0.02), 0 4px 12px rgba(11,63,107,0.03)",
     }}>
       {/* Greeting */}
       <div>
-        <div style={{ fontSize: 18, fontWeight: 700, color: "var(--color-text-dark)", lineHeight: 1.3,
-          display: "flex", alignItems: "center", gap: 6 }}>
-          <span>{getGreeting()}, <span style={{ color: "var(--color-primary)" }}>{userName}</span></span>
-          <Smile size={20} style={{ color: "var(--color-primary-light)" }} />
+        <div style={{
+          fontSize: 16,
+          fontWeight: 700,
+          color: "var(--color-text-dark)",
+          lineHeight: 1.3,
+          display: "flex",
+          alignItems: "center",
+          gap: 6
+        }}>
+          <span>{getGreeting()}, <span style={{ color: "var(--color-primary)", fontWeight: 800 }}>{userName}</span></span>
+          <Smile size={18} style={{ color: "var(--color-primary-light)" }} />
         </div>
-        <div style={{ fontSize: 13, color: "var(--color-text-muted)", marginTop: 2 }}>
+        <div style={{ fontSize: 12, color: "var(--color-text-muted)", marginTop: 4, fontWeight: 500 }}>
           {formatDate(now)}
         </div>
       </div>
@@ -71,26 +80,38 @@ export default function Header() {
         {/* Notification bell placeholder */}
         <button
           style={{
-            width: 40, height: 40, borderRadius: "50%",
-            background: "var(--color-neutral-bg)",
+            width: 38, height: 38, borderRadius: "50%",
+            background: "#fff",
             border: "1px solid #E5E7EB",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer", color: "var(--color-text-muted)",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--color-primary-light)";
+            e.currentTarget.style.color = "var(--color-primary)";
+            e.currentTarget.style.background = "var(--color-primary-soft)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "#E5E7EB";
+            e.currentTarget.style.color = "var(--color-text-muted)";
+            e.currentTarget.style.background = "#fff";
           }}
           aria-label="Notifikasi"
         >
-          <Bell size={18} />
+          <Bell size={16} />
         </button>
 
         {/* Avatar */}
         <div style={{
-          width: 40, height: 40, borderRadius: "50%",
-          background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%)",
+          width: 38, height: 38, borderRadius: "50%",
+          background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-navy) 100%)",
           display: "flex", alignItems: "center", justifyContent: "center",
-          color: "#fff", fontWeight: 700, fontSize: 15,
-          boxShadow: "0 2px 8px rgba(11,95,160,0.25)",
+          color: "#fff", fontWeight: 700, fontSize: 14,
+          boxShadow: "0 2px 8px rgba(0,114,188,0.2)",
           cursor: "default",
           flexShrink: 0,
+          border: "2px solid #fff",
         }}>
           {userName.charAt(0).toUpperCase()}
         </div>
