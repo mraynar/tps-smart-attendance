@@ -12,11 +12,12 @@ export default function FilterBar({ children }: FilterBarProps) {
         flexWrap: "wrap",
         gap: 12,
         alignItems: "center",
-        padding: "16px 20px",
+        padding: "12px 16px",
         background: "#fff",
-        borderRadius: 16,
-        border: "1px solid #F3F4F6",
+        borderRadius: 12,
+        border: "1px solid rgba(229, 231, 235, 0.6)",
         marginBottom: 20,
+        boxShadow: "0 1px 3px rgba(11,63,107,0.02)",
       }}
     >
       {children}
@@ -47,17 +48,29 @@ export function DateRangePicker({
         value={startDate}
         onChange={(e) => onStartChange(e.target.value)}
         className="input-field"
-        style={{ width: 160, borderRadius: 10, fontSize: 13 }}
+        style={{
+          width: 150,
+          borderRadius: 8,
+          fontSize: 13,
+          height: 38,
+          border: "1.5px solid rgba(229, 231, 235, 0.8)",
+        }}
         aria-label="Tanggal mulai"
       />
-      <span style={{ color: "var(--color-text-muted)", fontSize: 14 }}>–</span>
+      <span style={{ color: "var(--color-text-muted)", fontSize: 13, fontWeight: 600 }}>–</span>
       <input
         id={`${idPrefix}-end`}
         type="date"
         value={endDate}
         onChange={(e) => onEndChange(e.target.value)}
         className="input-field"
-        style={{ width: 160, borderRadius: 10, fontSize: 13 }}
+        style={{
+          width: 150,
+          borderRadius: 8,
+          fontSize: 13,
+          height: 38,
+          border: "1.5px solid rgba(229, 231, 235, 0.8)",
+        }}
         aria-label="Tanggal akhir"
       />
     </div>
@@ -74,19 +87,44 @@ interface SelectFilterProps {
 
 export function SelectFilter({ id, value, onChange, options, placeholder = "Semua" }: SelectFilterProps) {
   return (
-    <select
-      id={id}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="input-field"
-      style={{ width: "auto", minWidth: 140, borderRadius: 10, fontSize: 13, cursor: "pointer" }}
-    >
-      <option value="">{placeholder}</option>
-      {options.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <select
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="input-field"
+        style={{
+          width: "auto",
+          minWidth: 140,
+          borderRadius: 8,
+          fontSize: 13,
+          fontWeight: 500,
+          cursor: "pointer",
+          height: 38,
+          paddingRight: 32,
+          border: "1.5px solid rgba(229, 231, 235, 0.8)",
+          background: "#fff",
+        }}
+      >
+        <option value="">{placeholder}</option>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+      <div style={{
+        position: "absolute",
+        right: 12,
+        top: "50%",
+        transform: "translateY(-50%)",
+        pointerEvents: "none",
+        color: "var(--color-text-muted)",
+        fontSize: 10,
+        fontWeight: "bold",
+      }}>
+        ▼
+      </div>
+    </div>
   );
 }
