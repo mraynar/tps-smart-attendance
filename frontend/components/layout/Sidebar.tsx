@@ -110,7 +110,7 @@ export default function Sidebar() {
             transition: "opacity 0.2s ease-in-out",
           }}>
             <Image
-              src="/Logo Pelindo.png"
+              src="/Images/Logo/Logo Pelindo.png"
               alt="Logo Pelindo"
               width={36}
               height={36}
@@ -137,7 +137,7 @@ export default function Sidebar() {
             overflow: "hidden",
           }}>
             <Image
-              src="/Logo_TPS.png"
+              src="/Images/Logo/Logo_TPS.png"
               alt="Logo TPS"
               width={116}
               height={36}

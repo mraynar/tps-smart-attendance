@@ -21,3 +21,4 @@ on conflict (id) do nothing;
 insert into cameras (id, site_id, name, purpose)
 values ('00000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000001', 'CAM-TEST', 'face_recognition')
 on conflict (id) do nothing;
+  

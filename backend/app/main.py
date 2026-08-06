@@ -2,22 +2,17 @@ import sys
 from pathlib import Path
 import shutil
 import tempfile
-
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "ml" / "face_recognition"))
 sys.path.insert(0, str(PROJECT_ROOT / "ml" / "plate_detection"))
-
 from attendance_pipeline_db import process_attendance
 from pipeline_db import detect_and_log_plate
-
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from enroll_db import enroll_employee, enroll_driver
-
+from app.api.routes.users import router as users_router
 app = FastAPI(title="TPS Smart Attendance API")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],  
@@ -25,14 +20,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+app.include_router(users_router)
 def save_upload_to_temp(file: UploadFile) -> Path:
     suffix = Path(file.filename).suffix or ".jpg"
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
         shutil.copyfileobj(file.file, tmp)
         return Path(tmp.name)
-
-
 @app.post("/api/attendance/detect")
 async def attendance_detect(camera_id: str = Form(...), image: UploadFile = File(...)):
     temp_path = save_upload_to_temp(image)
@@ -42,10 +35,7 @@ async def attendance_detect(camera_id: str = Form(...), image: UploadFile = File
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         temp_path.unlink(missing_ok=True)
-
     return {"results": results}
-
-
 @app.post("/api/plate/detect")
 async def plate_detect(camera_id: str = Form(...), image: UploadFile = File(...)):
     temp_path = save_upload_to_temp(image)
@@ -55,9 +45,7 @@ async def plate_detect(camera_id: str = Form(...), image: UploadFile = File(...)
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         temp_path.unlink(missing_ok=True)
-
     return {"results": results}
-
 @app.post("/api/enroll")
 async def enroll(
     person_type: str = Form(...),  # "employee" atau "driver"
@@ -88,9 +76,7 @@ async def enroll(
     finally:
         for p in temp_paths:
             p.unlink(missing_ok=True)
-
     return {"person_id": person_id, "message": "Enrollment berhasil"}
-
 @app.get("/health")
 async def health():
     return {"status": "ok"}

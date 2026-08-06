@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "TPS Smart Attendance — Terminal Petikemas Surabaya",
   description:
     "Dashboard internal monitoring absensi wajah dan deteksi plat nomor kendaraan di Terminal Petikemas Surabaya (TPS), anak perusahaan Pelindo.",
+  icons: {
+    icon: "/Images/Logo/Logo Pelindo.png",
+  },
 };
 
 export default function RootLayout({

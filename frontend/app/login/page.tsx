@@ -72,7 +72,7 @@ export default function LoginPage() {
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ marginBottom: "48px" }}>
             <Image
-              src="/Logo TPS Monokrom.png"
+              src="/Images/Logo/Logo TPS Monokrom.png"
               alt="Logo TPS"
               width={180}
               height={60}
@@ -134,7 +134,7 @@ export default function LoginPage() {
           {/* Mobile Logo */}
           <div className="mobile-logo-wrapper" style={{ display: "none", justifyContent: "center", marginBottom: 32 }}>
             <Image
-              src="/Logo_TPS.png"
+              src="/Images/Logo/Logo_TPS.png"
               alt="Logo TPS"
               width={154}
               height={48}
