@@ -127,10 +127,18 @@ export default function LoginPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#F9FAFB",
+        background: "var(--color-neutral-bg)",
         padding: "48px 32px",
       }}>
-        <div style={{ width: "100%", maxWidth: 400 }} className="animate-fade-in-up">
+        <div style={{
+          width: "100%",
+          maxWidth: 440,
+          background: "#ffffff",
+          padding: "40px",
+          borderRadius: 16,
+          boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 8px 24px rgba(11,63,107,0.04)",
+          border: "1px solid rgba(229, 231, 235, 0.5)",
+        }} className="animate-fade-in-up">
           {/* Mobile Logo */}
           <div className="mobile-logo-wrapper" style={{ display: "none", justifyContent: "center", marginBottom: 32 }}>
             <Image
@@ -147,16 +155,16 @@ export default function LoginPage() {
               priority
             />
           </div>
-          <div style={{ marginBottom: 40 }}>
-            <h2 style={{ fontSize: 28, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 8, letterSpacing: "-0.3px" }}>
+          <div style={{ marginBottom: 32 }}>
+            <h2 style={{ fontSize: 24, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 8, letterSpacing: "-0.5px" }}>
               Masuk ke Dashboard
             </h2>
-            <p style={{ fontSize: 15, color: "var(--color-text-muted)" }}>
+            <p style={{ fontSize: 14, color: "var(--color-text-muted)" }}>
               Gunakan akun administrator TPS Anda
             </p>
           </div>
 
-          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {/* Email */}
             <div>
               <label htmlFor="login-email" className="form-label">Email</label>
@@ -169,6 +177,12 @@ export default function LoginPage() {
                 className="input-field"
                 placeholder="admin@tps.co.id"
                 autoComplete="email"
+                style={{
+                  border: "1.5px solid rgba(229, 231, 235, 0.8)",
+                  borderRadius: 10,
+                  height: 40,
+                  fontSize: 14,
+                }}
               />
             </div>
 
@@ -185,7 +199,13 @@ export default function LoginPage() {
                   className="input-field"
                   placeholder="••••••••"
                   autoComplete="current-password"
-                  style={{ paddingRight: 44 }}
+                  style={{
+                    paddingRight: 44,
+                    border: "1.5px solid rgba(229, 231, 235, 0.8)",
+                    borderRadius: 10,
+                    height: 40,
+                    fontSize: 14,
+                  }}
                 />
                 <button
                   type="button"
@@ -205,13 +225,13 @@ export default function LoginPage() {
             {/* Error message */}
             {error && (
               <div style={{
-                padding: "12px 16px",
+                padding: "10px 14px",
                 background: "#FEF2F2",
                 border: "1px solid #FECACA",
-                borderRadius: 12,
+                borderRadius: 10,
                 color: "var(--color-danger)",
-                fontSize: 14,
-                fontWeight: 500,
+                fontSize: 13,
+                fontWeight: 600,
               }}>
                 {error}
               </div>
@@ -224,17 +244,19 @@ export default function LoginPage() {
               className="btn-primary"
               style={{
                 justifyContent: "center",
-                padding: "14px 24px",
-                fontSize: 16,
+                padding: "12px 24px",
+                fontSize: 15,
                 opacity: loading ? 0.7 : 1,
                 cursor: loading ? "not-allowed" : "pointer",
                 marginTop: 4,
+                height: 42,
+                borderRadius: 10,
               }}
             >
               {loading ? (
                 <>
                   <div style={{
-                    width: 18, height: 18, border: "2px solid rgba(255,255,255,0.4)",
+                    width: 16, height: 16, border: "2px solid rgba(255,255,255,0.4)",
                     borderTopColor: "#fff", borderRadius: "50%",
                     animation: "spin 0.8s linear infinite",
                   }} />
@@ -242,14 +264,14 @@ export default function LoginPage() {
                 </>
               ) : (
                 <>
-                  <LogIn size={18} />
+                  <LogIn size={16} />
                   Masuk
                 </>
               )}
             </button>
           </form>
 
-          <p style={{ marginTop: 32, fontSize: 13, color: "var(--color-text-muted)", textAlign: "center" }}>
+          <p style={{ marginTop: 24, fontSize: 12, color: "var(--color-text-muted)", textAlign: "center", fontWeight: 500 }}>
             Sistem ini hanya untuk personel yang berwenang.
           </p>
         </div>
