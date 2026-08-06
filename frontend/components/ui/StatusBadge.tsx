@@ -48,29 +48,50 @@ export default function StatusBadge({ variant, customLabel, size = "md" }: Statu
   const label = customLabel ?? config.label;
   const padding = size === "sm" ? "2px 8px" : "4px 12px";
   const fontSize = size === "sm" ? 11 : 12;
+  const isLive = ["recognized", "active"].includes(variant);
 
   return (
-    <span style={{
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 5,
-      padding,
-      borderRadius: 999,
-      background: config.bg,
-      color: config.color,
-      fontWeight: 600,
-      fontSize,
-      whiteSpace: "nowrap",
-      lineHeight: 1.5,
-    }}>
-      {config.dot && (
-        <span style={{
-          width: 6, height: 6, borderRadius: "50%",
-          background: config.dot, flexShrink: 0,
-        }} />
-      )}
-      {label}
-    </span>
+    <>
+      <style>{`
+        @keyframes badgePulse {
+          0% { opacity: 0.6; transform: scale(0.85); }
+          50% { opacity: 1; transform: scale(1.15); }
+          100% { opacity: 0.6; transform: scale(0.85); }
+        }
+        .badge-pulse {
+          animation: badgePulse 2s infinite ease-in-out;
+        }
+      `}</style>
+      <span style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding,
+        borderRadius: 999,
+        background: config.bg,
+        color: config.color,
+        fontWeight: 700,
+        fontSize,
+        whiteSpace: "nowrap",
+        lineHeight: 1.3,
+        letterSpacing: "0.01em",
+        border: "1px solid rgba(0,0,0,0.02)",
+      }}>
+        {config.dot && (
+          <span
+            className={isLive ? "badge-pulse" : ""}
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: config.dot,
+              flexShrink: 0,
+            }}
+          />
+        )}
+        {label}
+      </span>
+    </>
   );
 }
 
