@@ -154,7 +154,7 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, padding: "12px 8px", display: "flex", flexDirection: "column", gap: 2 }}>
+      <nav style={{ flex: 1, padding: "16px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
         {navItems.map(({ href, label, icon: Icon }) => {
           const active = isActive(href);
           return (
@@ -165,45 +165,76 @@ export default function Sidebar() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 10,
-                padding: collapsed ? "10px 14px" : "10px 12px",
-                borderRadius: 10,
+                gap: 12,
+                padding: collapsed ? "12px" : "10px 14px",
+                borderRadius: 8,
                 textDecoration: "none",
                 background: active ? "var(--color-primary-soft)" : "transparent",
                 color: active ? "var(--color-primary)" : "var(--color-text-muted)",
-                fontWeight: active ? 600 : 500,
+                fontWeight: active ? 700 : 500,
                 fontSize: 14,
-                transition: "all 0.15s",
+                transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
                 overflow: "hidden",
                 whiteSpace: "nowrap",
                 justifyContent: collapsed ? "center" : "flex-start",
+                position: "relative",
               }}
               onMouseEnter={(e) => {
-                if (!active) (e.currentTarget as HTMLElement).style.background = "var(--color-neutral-bg)";
+                if (!active) {
+                  (e.currentTarget as HTMLElement).style.background = "var(--color-neutral-bg)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--color-primary)";
+                }
               }}
               onMouseLeave={(e) => {
-                if (!active) (e.currentTarget as HTMLElement).style.background = "transparent";
+                if (!active) {
+                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                  (e.currentTarget as HTMLElement).style.color = "var(--color-text-muted)";
+                }
               }}
             >
-              <Icon size={18} style={{ flexShrink: 0 }} />
-              {!collapsed && label}
+              <Icon size={18} style={{
+                flexShrink: 0,
+                transition: "transform 0.2s ease",
+                transform: active ? "scale(1.05)" : "none",
+              }} />
+              {!collapsed && <span>{label}</span>}
+              {active && !collapsed && (
+                <div style={{
+                  position: "absolute",
+                  left: 0,
+                  top: "20%",
+                  height: "60%",
+                  width: 3,
+                  background: "var(--color-primary)",
+                  borderRadius: "0 4px 4px 0",
+                }} />
+              )}
             </Link>
           );
         })}
       </nav>
 
       {/* Collapse toggle + Logout */}
-      <div style={{ padding: "12px 8px", borderTop: "1px solid #F3F4F6", display: "flex", flexDirection: "column", gap: 4 }}>
+      <div style={{ padding: "16px 12px", borderTop: "1px solid #F3F4F6", display: "flex", flexDirection: "column", gap: 6 }}>
         <button
           onClick={() => setCollapsed(!collapsed)}
           title={collapsed ? "Perluas sidebar" : "Collapse sidebar"}
           style={{
-            display: "flex", alignItems: "center", gap: 10,
-            padding: collapsed ? "10px 14px" : "10px 12px",
-            borderRadius: 10, border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 12,
+            padding: collapsed ? "12px" : "10px 14px",
+            borderRadius: 8, border: "none", cursor: "pointer",
             background: "transparent", color: "var(--color-text-muted)",
             fontWeight: 500, fontSize: 14, width: "100%",
             justifyContent: collapsed ? "center" : "flex-start",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "var(--color-neutral-bg)";
+            (e.currentTarget as HTMLElement).style.color = "var(--color-text-dark)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "transparent";
+            (e.currentTarget as HTMLElement).style.color = "var(--color-text-muted)";
           }}
         >
           {collapsed ? <ChevronRight size={18} /> : <><ChevronLeft size={18} /> Collapse</>}
@@ -213,13 +244,20 @@ export default function Sidebar() {
           onClick={handleLogout}
           disabled={loggingOut}
           style={{
-            display: "flex", alignItems: "center", gap: 10,
-            padding: collapsed ? "10px 14px" : "10px 12px",
-            borderRadius: 10, border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 12,
+            padding: collapsed ? "12px" : "10px 14px",
+            borderRadius: 8, border: "none", cursor: "pointer",
             background: "transparent", color: "var(--color-danger)",
             fontWeight: 500, fontSize: 14, width: "100%",
             justifyContent: collapsed ? "center" : "flex-start",
             opacity: loggingOut ? 0.6 : 1,
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "#FEF2F2";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "transparent";
           }}
           title={collapsed ? "Keluar" : undefined}
         >
