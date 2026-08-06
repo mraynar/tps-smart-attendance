@@ -60,23 +60,23 @@ export default function TrendChart({ data, loading = false }: TrendChartProps) {
       <AreaChart data={data} margin={{ top: 8, right: 16, left: -16, bottom: 0 }}>
         <defs>
           <linearGradient id="gradAttendance" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#0B5FA0" stopOpacity={0.2} />
-            <stop offset="95%" stopColor="#0B5FA0" stopOpacity={0} />
+            <stop offset="5%"  stopColor="#0072BC" stopOpacity={0.2} />
+            <stop offset="95%" stopColor="#0072BC" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="gradPlates" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#4FA8DC" stopOpacity={0.2} />
-            <stop offset="95%" stopColor="#4FA8DC" stopOpacity={0} />
+            <stop offset="5%"  stopColor="#2D9CDB" stopOpacity={0.2} />
+            <stop offset="95%" stopColor="#2D9CDB" stopOpacity={0} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
         <XAxis
           dataKey="date"
-          tick={{ fontSize: 12, fill: "#6B7280" }}
+          tick={{ fontSize: 11, fill: "#6B7280" }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
-          tick={{ fontSize: 12, fill: "#6B7280" }}
+          tick={{ fontSize: 11, fill: "#6B7280" }}
           axisLine={false}
           tickLine={false}
           allowDecimals={false}
@@ -85,26 +85,26 @@ export default function TrendChart({ data, loading = false }: TrendChartProps) {
         <Legend
           iconType="circle"
           iconSize={8}
-          wrapperStyle={{ fontSize: 13, paddingTop: 16 }}
+          wrapperStyle={{ fontSize: 12, paddingTop: 16 }}
         />
         <Area
           type="monotone"
           dataKey="attendance"
           name="Absensi"
-          stroke="#0B5FA0"
+          stroke="#0072BC"
           strokeWidth={2.5}
           fill="url(#gradAttendance)"
-          dot={{ r: 3, fill: "#0B5FA0" }}
+          dot={{ r: 3, fill: "#0072BC" }}
           activeDot={{ r: 5 }}
         />
         <Area
           type="monotone"
           dataKey="plates"
           name="Deteksi Plat"
-          stroke="#4FA8DC"
+          stroke="#2D9CDB"
           strokeWidth={2.5}
           fill="url(#gradPlates)"
-          dot={{ r: 3, fill: "#4FA8DC" }}
+          dot={{ r: 3, fill: "#2D9CDB" }}
           activeDot={{ r: 5 }}
         />
       </AreaChart>

@@ -173,9 +173,9 @@ export default function DashboardPage() {
         alignItems: "start",
       }}>
         {/* Trend chart */}
-        <div className="card">
+        <div className="card" style={{ border: "1px solid rgba(229, 231, 235, 0.5)" }}>
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-dark)" }}>
+            <div style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-dark)", letterSpacing: "-0.2px" }}>
               Tren 7 Hari Terakhir
             </div>
             <div style={{ fontSize: 13, color: "var(--color-text-muted)", marginTop: 4 }}>
@@ -186,8 +186,8 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent activity */}
-        <div className="card" style={{ minWidth: 0 }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-dark)", marginBottom: 20 }}>
+        <div className="card" style={{ minWidth: 0, border: "1px solid rgba(229, 231, 235, 0.5)" }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-dark)", marginBottom: 20, letterSpacing: "-0.2px" }}>
             Aktivitas Terbaru
           </div>
           <RecentActivity items={activity} loading={loading} />
