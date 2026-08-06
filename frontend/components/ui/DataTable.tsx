@@ -44,12 +44,24 @@ export default function DataTable<T extends { id?: unknown }>({
   emptyDescription,
 }: DataTableProps<T>) {
   return (
-    <div className="table-container">
+    <div className="table-container" style={{
+      border: "1px solid rgba(229, 231, 235, 0.6)",
+      boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 12px rgba(11,63,107,0.01)",
+      background: "#fff",
+    }}>
       <table className="data-table">
         <thead>
           <tr>
             {columns.map((col) => (
-              <th key={col.key} style={{ width: col.width }}>
+              <th key={col.key} style={{
+                width: col.width,
+                padding: "14px 18px",
+                fontSize: 11.5,
+                fontWeight: 700,
+                color: "var(--color-text-muted)",
+                letterSpacing: "0.03em",
+                borderBottom: "1.5px solid rgba(229, 231, 235, 0.8)",
+              }}>
                 {col.header}
               </th>
             ))}
@@ -70,9 +82,16 @@ export default function DataTable<T extends { id?: unknown }>({
                 ? String(row[keyField])
                 : `row-${idx}`;
               return (
-                <tr key={key}>
+                <tr key={key} style={{ transition: "background 0.2s ease" }}>
                   {columns.map((col) => (
-                    <td key={col.key}>{col.render(row)}</td>
+                    <td key={col.key} style={{
+                      padding: "14px 18px",
+                      fontSize: 13.5,
+                      color: "var(--color-text-dark)",
+                      borderBottom: idx === data.length - 1 ? "none" : "1px solid rgba(243, 244, 246, 0.8)",
+                    }}>
+                      {col.render(row)}
+                    </td>
                   ))}
                 </tr>
               );
