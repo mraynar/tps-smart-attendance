@@ -16,7 +16,14 @@ export default function DashboardLayout({
       <Sidebar />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
         <Header />
-        <main style={{ flex: 1, padding: "28px", maxWidth: "100%" }}>
+        <main style={{
+          flex: 1,
+          padding: "32px 36px",
+          width: "100%",
+          maxWidth: 1600,
+          margin: "0 auto",
+          boxSizing: "border-box",
+        }}>
           {children}
         </main>
       </div>
