@@ -114,22 +114,32 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
       {/* Page title */}
-      <div>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 4, letterSpacing: "-0.3px" }}>
-          Dashboard Overview
-        </h1>
-        <p style={{ fontSize: 14, color: "var(--color-text-muted)" }}>
-          Ringkasan aktivitas harian — absensi wajah & deteksi plat nomor
-        </p>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            fontSize: 12, fontWeight: 700, color: "var(--color-primary)",
+            background: "var(--color-primary-soft)", padding: "4px 10px", borderRadius: 6,
+            marginBottom: 8, letterSpacing: "0.02em", textTransform: "uppercase"
+          }}>
+            Terminal Petikemas Surabaya · Monitoring Hub
+          </div>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 4, letterSpacing: "-0.5px" }}>
+            Dashboard Overview
+          </h1>
+          <p style={{ fontSize: 14, color: "var(--color-text-muted)", fontWeight: 500 }}>
+            Monitoring real-time aktivitas absensi wajah pegawai & deteksi plat kendaraan logistik
+          </p>
+        </div>
       </div>
 
       {/* Stat cards */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-        gap: 16,
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 20,
       }}>
         <StatCard
           label="Absensi Hari Ini"
@@ -168,26 +178,33 @@ export default function DashboardPage() {
       {/* Chart + Activity */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "1fr 360px",
-        gap: 20,
+        gridTemplateColumns: "1fr 380px",
+        gap: 24,
         alignItems: "start",
       }}>
         {/* Trend chart */}
-        <div className="card" style={{ border: "1px solid rgba(229, 231, 235, 0.5)" }}>
+        <div className="card" style={{
+          border: "1px solid rgba(229, 231, 235, 0.6)",
+          boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 16px rgba(11,63,107,0.03)",
+        }}>
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-dark)", letterSpacing: "-0.2px" }}>
+            <div style={{ fontSize: 16, fontWeight: 800, color: "var(--color-text-dark)", letterSpacing: "-0.2px" }}>
               Tren 7 Hari Terakhir
             </div>
-            <div style={{ fontSize: 13, color: "var(--color-text-muted)", marginTop: 4 }}>
-              Jumlah absensi & deteksi plat per hari
+            <div style={{ fontSize: 13, color: "var(--color-text-muted)", marginTop: 4, fontWeight: 500 }}>
+              Statistik perbandingan absensi wajah dan deteksi plat harian
             </div>
           </div>
           <TrendChart data={trend} loading={loading} />
         </div>
 
         {/* Recent activity */}
-        <div className="card" style={{ minWidth: 0, border: "1px solid rgba(229, 231, 235, 0.5)" }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-dark)", marginBottom: 20, letterSpacing: "-0.2px" }}>
+        <div className="card" style={{
+          minWidth: 0,
+          border: "1px solid rgba(229, 231, 235, 0.6)",
+          boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 16px rgba(11,63,107,0.03)",
+        }}>
+          <div style={{ fontSize: 16, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 16, letterSpacing: "-0.2px" }}>
             Aktivitas Terbaru
           </div>
           <RecentActivity items={activity} loading={loading} />
