@@ -195,11 +195,12 @@ export default function PersonsPage() {
           <button key={val}
             onClick={() => setTypeFilter(val as any)}
             style={{
-              padding: "6px 18px", borderRadius: 999, border: "1.5px solid",
-              cursor: "pointer", fontWeight: 600, fontSize: 13, transition: "all 0.15s",
-              borderColor: typeFilter === val ? "var(--color-primary)" : "#E5E7EB",
+              padding: "7px 20px", borderRadius: 999, border: "1.5px solid",
+              cursor: "pointer", fontWeight: 700, fontSize: 13, transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+              borderColor: typeFilter === val ? "var(--color-primary)" : "rgba(229, 231, 235, 0.8)",
               background: typeFilter === val ? "var(--color-primary)" : "#fff",
               color: typeFilter === val ? "#fff" : "var(--color-text-muted)",
+              boxShadow: typeFilter === val ? "0 2px 8px rgba(0, 114, 188, 0.25)" : "0 1px 2px rgba(0,0,0,0.02)",
             }}>
             {label}
           </button>
@@ -208,9 +209,9 @@ export default function PersonsPage() {
 
       {/* Grid list */}
       {loading ? (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 16 }}>
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="card" style={{ display: "flex", gap: 14, alignItems: "center" }}>
+            <div key={i} className="card" style={{ display: "flex", gap: 14, alignItems: "center", border: "1px solid rgba(229, 231, 235, 0.5)" }}>
               <div className="skeleton" style={{ width: 52, height: 52, borderRadius: "50%" }} />
               <div style={{ flex: 1 }}>
                 <div className="skeleton" style={{ height: 14, width: "70%", marginBottom: 8 }} />
@@ -220,7 +221,7 @@ export default function PersonsPage() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="card">
+        <div className="card" style={{ border: "1px solid rgba(229, 231, 235, 0.6)" }}>
           <EmptyState
             icon={Users}
             title="Tidak ada orang ditemukan"
@@ -231,10 +232,26 @@ export default function PersonsPage() {
           />
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 16 }}>
           {filtered.map((p) => (
             <div key={p.id} className="card animate-fade-in-up"
-              style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+              style={{
+                display: "flex", gap: 14, alignItems: "flex-start",
+                border: "1px solid rgba(229, 231, 235, 0.6)",
+                boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 12px rgba(11,63,107,0.02)",
+                transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(11,63,107,0.06)";
+                e.currentTarget.style.borderColor = "rgba(0, 114, 188, 0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 1px 3px rgba(11,63,107,0.02), 0 4px 12px rgba(11,63,107,0.02)";
+                e.currentTarget.style.borderColor = "rgba(229, 231, 235, 0.6)";
+              }}
+            >
               {/* Avatar */}
               <div style={{
                 width: 52, height: 52, borderRadius: "50%", flexShrink: 0, overflow: "hidden",
@@ -242,7 +259,8 @@ export default function PersonsPage() {
                   ? "linear-gradient(135deg, var(--color-primary-soft), var(--color-primary-light))"
                   : "linear-gradient(135deg, #EDE9FE, #A78BFA)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                border: "2px solid #fff",
               }}>
                 {p.photo_url ? (
                   <img src={p.photo_url} alt={p.full_name}
@@ -254,7 +272,7 @@ export default function PersonsPage() {
 
               {/* Info */}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
                   <span style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-dark)" }}>
                     {p.full_name}
                   </span>
@@ -264,19 +282,19 @@ export default function PersonsPage() {
 
                 {p.person_type === "employee" && p.employee_details && (
                   <div style={{ fontSize: 12, color: "var(--color-text-muted)", lineHeight: 1.7 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                      <Briefcase size={11} /> {p.employee_details.employee_id}
+                    <div style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: 500 }}>
+                      <Briefcase size={12} style={{ color: "var(--color-primary)" }} /> {p.employee_details.employee_id}
                     </div>
                     {p.employee_details.department && (
-                      <div>{p.employee_details.department} {p.employee_details.position ? `· ${p.employee_details.position}` : ""}</div>
+                      <div style={{ color: "var(--color-text-dark)", fontWeight: 500 }}>{p.employee_details.department} {p.employee_details.position ? `· ${p.employee_details.position}` : ""}</div>
                     )}
                   </div>
                 )}
                 {p.person_type === "driver" && p.driver_details && (
                   <div style={{ fontSize: 12, color: "var(--color-text-muted)", lineHeight: 1.7 }}>
                     {p.driver_details.company_name && (
-                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                        <Car size={11} /> {p.driver_details.company_name}
+                      <div style={{ display: "flex", alignItems: "center", gap: 5, color: "var(--color-text-dark)", fontWeight: 500 }}>
+                        <Car size={12} style={{ color: "#7C3AED" }} /> {p.driver_details.company_name}
                       </div>
                     )}
                     {p.driver_details.license_number && <div>SIM: {p.driver_details.license_number}</div>}
