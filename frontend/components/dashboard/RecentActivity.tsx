@@ -50,7 +50,7 @@ export default function RecentActivity({ items, loading = false }: RecentActivit
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
       {items.map((item, idx) => (
         <div
           key={item.id}
@@ -58,44 +58,54 @@ export default function RecentActivity({ items, loading = false }: RecentActivit
             display: "flex",
             alignItems: "center",
             gap: 14,
-            padding: "12px 0",
-            borderBottom: idx < items.length - 1 ? "1px solid #F3F4F6" : "none",
+            padding: "10px 8px",
+            borderRadius: 10,
+            borderBottom: idx < items.length - 1 ? "1px solid rgba(243, 244, 246, 0.8)" : "none",
+            transition: "all 0.15s ease",
+            cursor: "default",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--color-neutral-bg)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
           }}
         >
           {/* Type icon dot */}
           <div style={{
-            width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
+            width: 36, height: 36, borderRadius: 10, flexShrink: 0,
             background: item.type === "attendance" ? "var(--color-primary-soft)" : "#EDE9FE",
             display: "flex", alignItems: "center", justifyContent: "center",
             color: item.type === "attendance" ? "var(--color-primary)" : "#7C3AED",
+            border: "1px solid rgba(229, 231, 235, 0.5)",
           }}>
-            {item.type === "attendance" ? <User size={18} /> : <Car size={18} />}
+            {item.type === "attendance" ? <User size={17} /> : <Car size={17} />}
           </div>
 
           {/* Text */}
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{
-              fontSize: 14, fontWeight: 600, color: "var(--color-text-dark)",
+              fontSize: 13.5, fontWeight: 700, color: "var(--color-text-dark)",
               whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
             }}>
               {item.label}
             </div>
             {item.sublabel && (
-              <div style={{ fontSize: 12, color: "var(--color-text-muted)", marginTop: 2 }}>
+              <div style={{ fontSize: 11.5, color: "var(--color-text-muted)", marginTop: 2, fontWeight: 500 }}>
                 {item.sublabel}
               </div>
             )}
           </div>
 
           {/* Status + time */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3, flexShrink: 0 }}>
             {item.status && (
               <StatusBadge
                 variant={item.status as any}
                 size="sm"
               />
             )}
-            <span style={{ fontSize: 11, color: "var(--color-text-muted)" }}>
+            <span style={{ fontSize: 11, color: "var(--color-text-muted)", fontWeight: 600, letterSpacing: "-0.2px" }}>
               {formatTime(item.timestamp)}
             </span>
           </div>
@@ -105,7 +115,22 @@ export default function RecentActivity({ items, loading = false }: RecentActivit
       <div style={{ paddingTop: 16, textAlign: "center" }}>
         <Link
           href="/attendance"
-          style={{ fontSize: 13, color: "var(--color-primary)", fontWeight: 600, textDecoration: "none" }}
+          style={{
+            display: "inline-block",
+            fontSize: 13,
+            color: "var(--color-primary)",
+            fontWeight: 700,
+            textDecoration: "none",
+            padding: "6px 14px",
+            borderRadius: 8,
+            transition: "all 0.15s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--color-primary-soft)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+          }}
         >
           Lihat semua aktivitas →
         </Link>
