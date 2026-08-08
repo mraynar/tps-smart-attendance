@@ -89,28 +89,55 @@ export default function AttendancePage() {
       key: "photo", header: "Foto",
       render: (r) => r.captured_image_url ? (
         <img src={r.captured_image_url} alt="Capture"
-          style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", border: "1px solid #E5E7EB" }} />
+          style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", border: "1px solid rgba(229, 231, 235, 0.8)", boxShadow: "0 1px 2px rgba(0,0,0,0.04)" }} />
       ) : (
         <div style={{ width: 40, height: 40, borderRadius: 8, background: "var(--color-neutral-bg)",
+          border: "1px solid rgba(229, 231, 235, 0.5)",
           display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <User size={20} style={{ color: "var(--color-text-muted)" }} />
+          <User size={18} style={{ color: "var(--color-text-muted)" }} />
         </div>
       ),
       width: "60px",
     },
     {
-      key: "name", header: "Nama",
+      key: "name", header: "Nama Pegawai / Sopir",
       render: (r) => (
         <div>
-          <div style={{ fontWeight: 600, fontSize: 14 }}>{r.persons?.full_name ?? <em style={{ color: "var(--color-text-muted)" }}>Tidak Dikenal</em>}</div>
-          <div style={{ fontSize: 12, color: "var(--color-text-muted)" }}>{r.cameras?.name ?? "–"}</div>
+          <div style={{ fontWeight: 700, fontSize: 14, color: "var(--color-text-dark)" }}>{r.persons?.full_name ?? <em style={{ color: "var(--color-text-muted)", fontWeight: 400 }}>Tidak Dikenal</em>}</div>
+          <div style={{ fontSize: 12, color: "var(--color-text-muted)", marginTop: 2, display: "flex", alignItems: "center", gap: 4 }}>
+            <span>Kamera: {r.cameras?.name ?? "–"}</span>
+          </div>
         </div>
       ),
     },
-    { key: "time", header: "Waktu", render: (r) => <span style={{ fontSize: 13 }}>{fmtDT(r.detected_at)}</span> },
+    { key: "time", header: "Waktu Absen", render: (r) => <span style={{ fontSize: 13, fontWeight: 500, color: "var(--color-text-dark)" }}>{fmtDT(r.detected_at)}</span> },
     { key: "status", header: "Status", render: (r) => <StatusBadge variant={r.status as any} /> },
-    { key: "sim", header: "Similarity", render: (r) => <span style={{ fontSize: 13, fontFamily: "monospace" }}>{fmtScore(r.similarity_score)}</span> },
-    { key: "live", header: "Liveness", render: (r) => <span style={{ fontSize: 13, fontFamily: "monospace" }}>{fmtScore(r.liveness_score)}</span> },
+    {
+      key: "sim", header: "Similarity",
+      render: (r) => (
+        <span style={{
+          fontSize: 12, fontFamily: "monospace", fontWeight: 700,
+          padding: "3px 8px", borderRadius: 6,
+          background: r.similarity_score && r.similarity_score >= 0.75 ? "rgba(34, 197, 94, 0.1)" : "rgba(107, 114, 128, 0.1)",
+          color: r.similarity_score && r.similarity_score >= 0.75 ? "var(--color-success)" : "var(--color-text-muted)",
+        }}>
+          {fmtScore(r.similarity_score)}
+        </span>
+      )
+    },
+    {
+      key: "live", header: "Liveness",
+      render: (r) => (
+        <span style={{
+          fontSize: 12, fontFamily: "monospace", fontWeight: 700,
+          padding: "3px 8px", borderRadius: 6,
+          background: r.liveness_score && r.liveness_score >= 0.8 ? "rgba(0, 114, 188, 0.1)" : "rgba(107, 114, 128, 0.1)",
+          color: r.liveness_score && r.liveness_score >= 0.8 ? "var(--color-primary)" : "var(--color-text-muted)",
+        }}>
+          {fmtScore(r.liveness_score)}
+        </span>
+      )
+    },
   ];
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
@@ -122,8 +149,8 @@ export default function AttendancePage() {
           <h1 style={{ fontSize: 24, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 4, letterSpacing: "-0.3px" }}>
             Riwayat Absensi
           </h1>
-          <p style={{ fontSize: 14, color: "var(--color-text-muted)" }}>
-            {loading ? "Memuat..." : `${total} record ditemukan`}
+          <p style={{ fontSize: 14, color: "var(--color-text-muted)", fontWeight: 500 }}>
+            {loading ? "Memuat data..." : `${total} record absensi ditemukan`}
           </p>
         </div>
         <SearchBar id="att-search" value={search} onChange={setSearch} placeholder="Cari nama atau kamera..." />
@@ -143,10 +170,21 @@ export default function AttendancePage() {
           placeholder="Semua Kamera" options={cameras} />
       </FilterBar>
 
-      <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 20px", borderBottom: "1px solid #F3F4F6" }}>
-          <UserCheck size={18} style={{ color: "var(--color-primary)" }} />
-          <span style={{ fontWeight: 700, fontSize: 15 }}>Log Absensi</span>
+      <div className="card" style={{
+        padding: 0,
+        overflow: "hidden",
+        border: "1px solid rgba(229, 231, 235, 0.6)",
+        boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 16px rgba(11,63,107,0.03)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", borderBottom: "1px solid rgba(229, 231, 235, 0.6)", background: "#fff" }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: "var(--color-primary-soft)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <UserCheck size={16} style={{ color: "var(--color-primary)" }} />
+          </div>
+          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-dark)" }}>Log Absensi Pegawai & Sopir</span>
         </div>
         <DataTable
           columns={columns}
@@ -160,20 +198,26 @@ export default function AttendancePage() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 12,
-            padding: "12px 20px", borderTop: "1px solid #F3F4F6" }}>
-            <span style={{ fontSize: 13, color: "var(--color-text-muted)" }}>
+            padding: "14px 20px", borderTop: "1px solid rgba(229, 231, 235, 0.6)", background: "#FAFBFD" }}>
+            <span style={{ fontSize: 13, color: "var(--color-text-muted)", fontWeight: 500 }}>
               Halaman {page + 1} dari {totalPages}
             </span>
             <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
-              style={{ padding: "6px 10px", border: "1px solid #E5E7EB", borderRadius: 8,
+              style={{
+                padding: "6px 12px", border: "1px solid rgba(229, 231, 235, 0.8)", borderRadius: 8,
                 background: "#fff", cursor: page === 0 ? "not-allowed" : "pointer",
-                opacity: page === 0 ? 0.4 : 1 }}>
+                opacity: page === 0 ? 0.4 : 1, transition: "all 0.15s",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
               <ChevronLeft size={16} />
             </button>
             <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}
-              style={{ padding: "6px 10px", border: "1px solid #E5E7EB", borderRadius: 8,
+              style={{
+                padding: "6px 12px", border: "1px solid rgba(229, 231, 235, 0.8)", borderRadius: 8,
                 background: "#fff", cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
-                opacity: page >= totalPages - 1 ? 0.4 : 1 }}>
+                opacity: page >= totalPages - 1 ? 0.4 : 1, transition: "all 0.15s",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
               <ChevronRight size={16} />
             </button>
           </div>
