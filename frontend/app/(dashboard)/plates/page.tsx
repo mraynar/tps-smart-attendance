@@ -87,35 +87,66 @@ export default function PlatesPage() {
 
   const columns: Column<PlateRow>[] = [
     {
-      key: "plate", header: "Plat Nomor",
+      key: "plate", header: "Nomor Plat Kendaraan",
       render: (r) => (
-        <div>
-          <div style={{ fontWeight: 700, fontSize: 15, fontFamily: "monospace", letterSpacing: 1 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          <span style={{
+            display: "inline-block",
+            fontWeight: 800,
+            fontSize: 13,
+            fontFamily: "monospace",
+            letterSpacing: 1.5,
+            background: "linear-gradient(180deg, #1E293B 0%, #0F172A 100%)",
+            color: "#F8FAFC",
+            padding: "3px 10px",
+            borderRadius: 6,
+            border: "1px solid #334155",
+            width: "fit-content",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
+          }}>
             {r.cleaned_plate_text ?? "–"}
-          </div>
+          </span>
           {r.raw_ocr_text && r.raw_ocr_text !== r.cleaned_plate_text && (
-            <div style={{ fontSize: 11, color: "var(--color-text-muted)" }}>Raw: {r.raw_ocr_text}</div>
+            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginLeft: 2 }}>Raw OCR: {r.raw_ocr_text}</div>
           )}
         </div>
       ),
     },
-    { key: "time", header: "Waktu", render: (r) => <span style={{ fontSize: 13 }}>{fmtDT(r.detected_at)}</span> },
-    { key: "confidence", header: "Confidence", render: (r) => (
-      <span style={{ fontSize: 13, fontFamily: "monospace",
-        color: (r.detection_confidence ?? 0) > 0.8 ? "var(--color-success)" : "var(--color-warning)" }}>
-        {fmtConf(r.detection_confidence)}
-      </span>
-    )},
-    { key: "camera", header: "Kamera", render: (r) => <span style={{ fontSize: 13 }}>{r.cameras?.name ?? "–"}</span> },
+    { key: "time", header: "Waktu Deteksi", render: (r) => <span style={{ fontSize: 13, fontWeight: 500, color: "var(--color-text-dark)" }}>{fmtDT(r.detected_at)}</span> },
     {
-      key: "vehicle", header: "Kendaraan",
+      key: "confidence", header: "Tingkat Akurasi",
+      render: (r) => (
+        <span style={{
+          fontSize: 12, fontFamily: "monospace", fontWeight: 700,
+          padding: "3px 8px", borderRadius: 6,
+          background: (r.detection_confidence ?? 0) > 0.8 ? "rgba(34, 197, 94, 0.1)" : "rgba(245, 158, 11, 0.1)",
+          color: (r.detection_confidence ?? 0) > 0.8 ? "var(--color-success)" : "var(--color-warning)",
+        }}>
+          {fmtConf(r.detection_confidence)}
+        </span>
+      )
+    },
+    { key: "camera", header: "Kamera / Titik Lokasi", render: (r) => <span style={{ fontSize: 13, color: "var(--color-text-dark)" }}>{r.cameras?.name ?? "–"}</span> },
+    {
+      key: "vehicle", header: "Status Kendaraan",
       render: (r) => r.vehicle_id ? (
         <Link href={`/vehicles?id=${r.vehicle_id}`}
-          style={{ display: "inline-flex", alignItems: "center", gap: 4,
-            color: "var(--color-primary)", fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
-          Detail <ExternalLink size={12} />
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            color: "var(--color-primary)", fontSize: 12, fontWeight: 700,
+            textDecoration: "none", background: "var(--color-primary-soft)",
+            padding: "3px 8px", borderRadius: 6,
+          }}>
+          Terdaftar <ExternalLink size={12} />
         </Link>
-      ) : <span style={{ color: "var(--color-text-muted)", fontSize: 13 }}>Tidak Terdaftar</span>,
+      ) : (
+        <span style={{
+          color: "var(--color-text-muted)", fontSize: 12, fontWeight: 500,
+          background: "var(--color-neutral-bg)", padding: "3px 8px", borderRadius: 6,
+        }}>
+          Belum Terdaftar
+        </span>
+      ),
     },
   ];
 
@@ -128,8 +159,8 @@ export default function PlatesPage() {
           <h1 style={{ fontSize: 24, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 4, letterSpacing: "-0.3px" }}>
             Riwayat Deteksi Plat
           </h1>
-          <p style={{ fontSize: 14, color: "var(--color-text-muted)" }}>
-            {loading ? "Memuat..." : `${total} record ditemukan`}
+          <p style={{ fontSize: 14, color: "var(--color-text-muted)", fontWeight: 500 }}>
+            {loading ? "Memuat data..." : `${total} deteksi kendaraan ditemukan`}
           </p>
         </div>
         <SearchBar id="plates-search" value={search} onChange={setSearch} placeholder="Cari nomor plat atau kamera..." />
@@ -142,10 +173,21 @@ export default function PlatesPage() {
           placeholder="Semua Kamera" options={cameras} />
       </FilterBar>
 
-      <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 20px", borderBottom: "1px solid #F3F4F6" }}>
-          <CarFront size={18} style={{ color: "#7C3AED" }} />
-          <span style={{ fontWeight: 700, fontSize: 15 }}>Log Deteksi Plat</span>
+      <div className="card" style={{
+        padding: 0,
+        overflow: "hidden",
+        border: "1px solid rgba(229, 231, 235, 0.6)",
+        boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 16px rgba(11,63,107,0.03)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", borderBottom: "1px solid rgba(229, 231, 235, 0.6)", background: "#fff" }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: "#EDE9FE",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <CarFront size={16} style={{ color: "#7C3AED" }} />
+          </div>
+          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-dark)" }}>Log Deteksi Plat Nomor (ANPR)</span>
         </div>
         <DataTable
           columns={columns}
@@ -157,19 +199,25 @@ export default function PlatesPage() {
         />
         {totalPages > 1 && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 12,
-            padding: "12px 20px", borderTop: "1px solid #F3F4F6" }}>
-            <span style={{ fontSize: 13, color: "var(--color-text-muted)" }}>
+            padding: "14px 20px", borderTop: "1px solid rgba(229, 231, 235, 0.6)", background: "#FAFBFD" }}>
+            <span style={{ fontSize: 13, color: "var(--color-text-muted)", fontWeight: 500 }}>
               Halaman {page + 1} dari {totalPages}
             </span>
             <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
-              style={{ padding: "6px 10px", border: "1px solid #E5E7EB", borderRadius: 8,
-                background: "#fff", cursor: page === 0 ? "not-allowed" : "pointer", opacity: page === 0 ? 0.4 : 1 }}>
+              style={{
+                padding: "6px 12px", border: "1px solid rgba(229, 231, 235, 0.8)", borderRadius: 8,
+                background: "#fff", cursor: page === 0 ? "not-allowed" : "pointer", opacity: page === 0 ? 0.4 : 1,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
               <ChevronLeft size={16} />
             </button>
             <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}
-              style={{ padding: "6px 10px", border: "1px solid #E5E7EB", borderRadius: 8,
+              style={{
+                padding: "6px 12px", border: "1px solid rgba(229, 231, 235, 0.8)", borderRadius: 8,
                 background: "#fff", cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
-                opacity: page >= totalPages - 1 ? 0.4 : 1 }}>
+                opacity: page >= totalPages - 1 ? 0.4 : 1,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
               <ChevronRight size={16} />
             </button>
           </div>
