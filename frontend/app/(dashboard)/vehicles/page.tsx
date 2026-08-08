@@ -107,23 +107,37 @@ export default function VehiclesPage() {
 
   const columns: Column<Vehicle>[] = [
     {
-      key: "plate", header: "Plat Nomor",
+      key: "plate", header: "Nomor Plat",
       render: (v) => (
-        <span style={{ fontWeight: 700, fontFamily: "monospace", fontSize: 15, letterSpacing: 1 }}>
+        <span style={{
+          display: "inline-block",
+          fontWeight: 800,
+          fontFamily: "monospace",
+          fontSize: 13.5,
+          letterSpacing: 1.5,
+          background: "linear-gradient(180deg, #1E293B 0%, #0F172A 100%)",
+          color: "#F8FAFC",
+          padding: "3px 10px",
+          borderRadius: 6,
+          border: "1px solid #334155",
+          boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
+        }}>
           {v.plate_number}
         </span>
       ),
     },
-    { key: "type", header: "Tipe", render: (v) => <StatusBadge variant={v.vehicle_type} /> },
-    { key: "company", header: "Perusahaan", render: (v) => <span style={{ fontSize: 13 }}>{v.owner_company ?? "–"}</span> },
+    { key: "type", header: "Kategori Kendaraan", render: (v) => <StatusBadge variant={v.vehicle_type} /> },
+    { key: "company", header: "Perusahaan Pemilik", render: (v) => <span style={{ fontSize: 13.5, fontWeight: 500, color: "var(--color-text-dark)" }}>{v.owner_company ?? "–"}</span> },
     {
-      key: "detections", header: "Jumlah Deteksi",
+      key: "detections", header: "Frekuensi Deteksi",
       render: (v) => (
         <span style={{
-          fontWeight: 700, fontSize: 15,
+          fontWeight: 700, fontSize: 12.5,
+          padding: "3px 10px", borderRadius: 999,
+          background: (v.detection_count ?? 0) > 0 ? "var(--color-primary-soft)" : "rgba(107, 114, 128, 0.1)",
           color: (v.detection_count ?? 0) > 0 ? "var(--color-primary)" : "var(--color-text-muted)",
         }}>
-          {v.detection_count ?? 0}
+          {v.detection_count ?? 0} kali
         </span>
       ),
     },
@@ -137,8 +151,8 @@ export default function VehiclesPage() {
           <h1 style={{ fontSize: 24, fontWeight: 800, color: "var(--color-text-dark)", marginBottom: 4, letterSpacing: "-0.3px" }}>
             Manajemen Kendaraan
           </h1>
-          <p style={{ fontSize: 14, color: "var(--color-text-muted)" }}>
-            {loading ? "Memuat..." : `${vehicles.length} kendaraan terdaftar`}
+          <p style={{ fontSize: 14, color: "var(--color-text-muted)", fontWeight: 500 }}>
+            {loading ? "Memuat data..." : `${vehicles.length} kendaraan operasional terdaftar`}
           </p>
         </div>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
@@ -149,10 +163,21 @@ export default function VehiclesPage() {
         </div>
       </div>
 
-      <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 20px", borderBottom: "1px solid #F3F4F6" }}>
-          <Truck size={18} style={{ color: "#B45309" }} />
-          <span style={{ fontWeight: 700, fontSize: 15 }}>Daftar Kendaraan</span>
+      <div className="card" style={{
+        padding: 0,
+        overflow: "hidden",
+        border: "1px solid rgba(229, 231, 235, 0.6)",
+        boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 16px rgba(11,63,107,0.03)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", borderBottom: "1px solid rgba(229, 231, 235, 0.6)", background: "#fff" }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: "#FEF3C7",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <Truck size={16} style={{ color: "#B45309" }} />
+          </div>
+          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-dark)" }}>Daftar Kendaraan & Truk Logistik</span>
         </div>
         {filtered.length === 0 && !loading ? (
           <EmptyState icon={Truck}
