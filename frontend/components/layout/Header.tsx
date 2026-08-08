@@ -76,8 +76,25 @@ export default function Header() {
       </div>
 
       {/* Right side */}
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        {/* Notification bell placeholder */}
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        {/* Live status chip */}
+        <div style={{
+          display: "flex", alignItems: "center", gap: 6,
+          padding: "5px 12px", borderRadius: 999,
+          background: "rgba(34, 197, 94, 0.08)",
+          border: "1px solid rgba(34, 197, 94, 0.25)",
+          color: "#15803D",
+          fontSize: 12, fontWeight: 700,
+        }}>
+          <span style={{
+            width: 7, height: 7, borderRadius: "50%",
+            background: "#22C55E",
+            boxShadow: "0 0 6px rgba(34, 197, 94, 0.6)",
+          }} />
+          <span>Sistem Online</span>
+        </div>
+
+        {/* Notification bell */}
         <button
           style={{
             width: 38, height: 38, borderRadius: "50%",
@@ -86,6 +103,7 @@ export default function Header() {
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer", color: "var(--color-text-muted)",
             boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+            transition: "all 0.15s ease",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = "var(--color-primary-light)";
