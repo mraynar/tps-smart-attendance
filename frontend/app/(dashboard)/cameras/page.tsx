@@ -140,11 +140,12 @@ export default function CamerasPage() {
           {[{ id: "", name: "Semua Lokasi" }, ...sites].map((s) => (
             <button key={s.id} onClick={() => setSiteFilter(s.id)}
               style={{
-                padding: "6px 16px", borderRadius: 999, border: "1.5px solid",
-                cursor: "pointer", fontWeight: 600, fontSize: 13, transition: "all 0.15s",
-                borderColor: siteFilter === s.id ? "var(--color-primary)" : "#E5E7EB",
+                padding: "7px 18px", borderRadius: 999, border: "1.5px solid",
+                cursor: "pointer", fontWeight: 700, fontSize: 13, transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                borderColor: siteFilter === s.id ? "var(--color-primary)" : "rgba(229, 231, 235, 0.8)",
                 background: siteFilter === s.id ? "var(--color-primary)" : "#fff",
                 color: siteFilter === s.id ? "#fff" : "var(--color-text-muted)",
+                boxShadow: siteFilter === s.id ? "0 2px 8px rgba(0, 114, 188, 0.25)" : "0 1px 2px rgba(0,0,0,0.02)",
               }}>
               {s.name}
             </button>
@@ -154,11 +155,11 @@ export default function CamerasPage() {
 
       {/* Camera cards grouped by site */}
       {loading ? (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
-          {[...Array(4)].map((_, i) => <div key={i} className="card skeleton" style={{ height: 120 }} />)}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+          {[...Array(4)].map((_, i) => <div key={i} className="card skeleton" style={{ height: 140, border: "1px solid rgba(229, 231, 235, 0.5)" }} />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="card">
+        <div className="card" style={{ border: "1px solid rgba(229, 231, 235, 0.6)" }}>
           <EmptyState icon={Camera} title="Tidak ada kamera"
             description={search ? "Coba kata kunci lain." : "Belum ada kamera terdaftar."}
             action={!search && <button onClick={openModal} className="btn-primary"><Plus size={16} /> Tambah Kamera</button>} />
@@ -169,55 +170,93 @@ export default function CamerasPage() {
             const cams = site.id === "ungrouped" ? ungrouped : (grouped[site.id] ?? []);
             if (!cams.length) return null;
             return (
-              <div key={site.id}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                  <MapPin size={15} style={{ color: "var(--color-primary)" }} />
-                  <span style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-dark)" }}>{site.name}</span>
-                  <span style={{ fontSize: 12, color: "var(--color-text-muted)" }}>({cams.length} kamera)</span>
+              <div key={site.id} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, paddingLeft: 2 }}>
+                  <div style={{
+                    width: 26, height: 26, borderRadius: 6,
+                    background: "var(--color-primary-soft)",
+                    display: "flex", alignItems: "center", justifyContent: "center"
+                  }}>
+                    <MapPin size={14} style={{ color: "var(--color-primary)" }} />
+                  </div>
+                  <span style={{ fontWeight: 800, fontSize: 16, color: "var(--color-text-dark)", letterSpacing: "-0.2px" }}>{site.name}</span>
+                  <span style={{
+                    fontSize: 12, fontWeight: 700,
+                    color: "var(--color-text-muted)",
+                    background: "rgba(107, 114, 128, 0.1)",
+                    padding: "2px 8px", borderRadius: 999,
+                  }}>
+                    {cams.length} unit
+                  </span>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
                   {cams.map((cam) => (
-                    <div key={cam.id} className="card animate-fade-in-up" style={{ padding: 16 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                          <div style={{
-                            width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-                            background: cam.is_active ? "var(--color-primary-soft)" : "var(--color-neutral-bg)",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                          }}>
-                            <Camera size={18} style={{ color: cam.is_active ? "var(--color-primary)" : "var(--color-text-muted)" }} />
-                          </div>
-                          <div>
-                            <div style={{ fontWeight: 700, fontSize: 14 }}>{cam.name}</div>
-                            <div style={{ fontSize: 12, color: "var(--color-text-muted)" }}>
-                              {PURPOSE_LABELS[cam.purpose] ?? cam.purpose}
+                    <div key={cam.id} className="card animate-fade-in-up"
+                      style={{
+                        padding: 18,
+                        display: "flex", flexDirection: "column", justifyContent: "space-between",
+                        border: "1px solid rgba(229, 231, 235, 0.6)",
+                        boxShadow: "0 1px 3px rgba(11,63,107,0.02), 0 4px 12px rgba(11,63,107,0.02)",
+                        transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "translateY(-3px)";
+                        e.currentTarget.style.boxShadow = "0 8px 24px rgba(11,63,107,0.06)";
+                        e.currentTarget.style.borderColor = "rgba(0, 114, 188, 0.2)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "0 1px 3px rgba(11,63,107,0.02), 0 4px 12px rgba(11,63,107,0.02)";
+                        e.currentTarget.style.borderColor = "rgba(229, 231, 235, 0.6)";
+                      }}
+                    >
+                      <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <div style={{
+                              width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                              background: cam.is_active ? "var(--color-primary-soft)" : "var(--color-neutral-bg)",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              border: "1px solid rgba(229, 231, 235, 0.5)",
+                            }}>
+                              <Camera size={18} style={{ color: cam.is_active ? "var(--color-primary)" : "var(--color-text-muted)" }} />
+                            </div>
+                            <div>
+                              <div style={{ fontWeight: 700, fontSize: 14.5, color: "var(--color-text-dark)" }}>{cam.name}</div>
+                              <div style={{ fontSize: 12, color: "var(--color-text-muted)", marginTop: 2, fontWeight: 500 }}>
+                                {PURPOSE_LABELS[cam.purpose] ?? cam.purpose}
+                              </div>
                             </div>
                           </div>
+                          <StatusBadge variant={cam.is_active ? "active" : "inactive"} size="sm" />
                         </div>
-                        <StatusBadge variant={cam.is_active ? "active" : "inactive"} size="sm" />
-                      </div>
 
-                      {cam.stream_url && (
-                        <div style={{ fontSize: 12, color: "var(--color-text-muted)", marginBottom: 12,
-                          overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                          display: "flex", alignItems: "center", gap: 6 }}
-                          title={cam.stream_url}>
-                          <Link2 size={14} style={{ flexShrink: 0 }} />
-                          <span>{cam.stream_url}</span>
-                        </div>
-                      )}
+                        {cam.stream_url && (
+                          <div style={{
+                            fontSize: 11.5, fontFamily: "monospace", color: "var(--color-text-muted)",
+                            marginBottom: 14, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                            display: "flex", alignItems: "center", gap: 6,
+                            background: "var(--color-neutral-bg)", padding: "6px 10px", borderRadius: 8,
+                            border: "1px solid rgba(229, 231, 235, 0.6)",
+                          }}
+                            title={cam.stream_url}>
+                            <Link2 size={13} style={{ flexShrink: 0, color: "var(--color-primary-light)" }} />
+                            <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{cam.stream_url}</span>
+                          </div>
+                        )}
+                      </div>
 
                       <button
                         onClick={() => toggleActive(cam)}
                         style={{
                           width: "100%", padding: "8px 0", borderRadius: 8, border: "1.5px solid",
-                          cursor: "pointer", fontWeight: 600, fontSize: 13, transition: "all 0.15s",
-                          borderColor: cam.is_active ? "#FECACA" : "#D1FAE5",
+                          cursor: "pointer", fontWeight: 700, fontSize: 12.5, transition: "all 0.15s",
+                          borderColor: cam.is_active ? "#FECACA" : "#BBF7D0",
                           background: cam.is_active ? "#FEF2F2" : "#F0FDF4",
                           color: cam.is_active ? "var(--color-danger)" : "var(--color-success)",
                         }}
                       >
-                        {cam.is_active ? "Nonaktifkan" : "Aktifkan"}
+                        {cam.is_active ? "Nonaktifkan Kamera" : "Aktifkan Kamera"}
                       </button>
                     </div>
                   ))}
