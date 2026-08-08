@@ -43,8 +43,9 @@ export default function Modal({
       style={{
         position: "fixed", inset: 0, zIndex: 1000,
         display: "flex", alignItems: "flex-end", justifyContent: "center",
-        background: "rgba(10,42,74,0.45)",
-        backdropFilter: "blur(4px)",
+        background: "rgba(11, 46, 74, 0.5)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
         animation: "fadeIn 0.2s ease",
       }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
@@ -61,8 +62,9 @@ export default function Modal({
           maxWidth,
           maxHeight: "90vh",
           background: "#fff",
-          borderRadius: "20px 20px 20px 20px",
-          boxShadow: "0 24px 64px rgba(10,42,74,0.18), 0 4px 16px rgba(0,0,0,0.08)",
+          borderRadius: "16px",
+          border: "1px solid rgba(229, 231, 235, 0.8)",
+          boxShadow: "0 25px 60px -15px rgba(11, 63, 107, 0.25), 0 0 1px rgba(0,0,0,0.1)",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
@@ -72,11 +74,12 @@ export default function Modal({
         {/* Header */}
         <div style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "20px 24px",
-          borderBottom: "1px solid #F3F4F6",
+          padding: "18px 24px",
+          borderBottom: "1px solid rgba(229, 231, 235, 0.6)",
           flexShrink: 0,
+          background: "#fff",
         }}>
-          <h2 id="modal-title" style={{ fontSize: 18, fontWeight: 700, color: "var(--color-text-dark)", margin: 0 }}>
+          <h2 id="modal-title" style={{ fontSize: 17, fontWeight: 800, color: "var(--color-text-dark)", margin: 0, letterSpacing: "-0.3px" }}>
             {title}
           </h2>
           <button
@@ -84,9 +87,18 @@ export default function Modal({
             style={{
               width: 32, height: 32, borderRadius: "50%",
               background: "var(--color-neutral-bg)",
-              border: "none", cursor: "pointer",
+              border: "1px solid rgba(229, 231, 235, 0.6)", cursor: "pointer",
               display: "flex", alignItems: "center", justifyContent: "center",
               color: "var(--color-text-muted)",
+              transition: "all 0.15s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#FEF2F2";
+              e.currentTarget.style.color = "var(--color-danger)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "var(--color-neutral-bg)";
+              e.currentTarget.style.color = "var(--color-text-muted)";
             }}
             aria-label="Tutup modal"
           >
@@ -103,7 +115,8 @@ export default function Modal({
         {footer && (
           <div style={{
             padding: "16px 24px",
-            borderTop: "1px solid #F3F4F6",
+            borderTop: "1px solid rgba(229, 231, 235, 0.6)",
+            background: "rgba(249, 250, 251, 0.8)",
             display: "flex", gap: 12, justifyContent: "flex-end",
             flexShrink: 0,
           }}>
